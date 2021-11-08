@@ -29,6 +29,14 @@ class App extends Component {
   };
 
   formSubmitHandler = ({ id, name, number }) => {
+    if (
+      this.state.contacts.some((item) => {
+        return item.name.toLowerCase().includes(name.toLowerCase());
+      })
+    ) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
     this.setState(prevState => ({
       contacts: [...prevState.contacts, { id, name, number }],
     }));
@@ -41,7 +49,6 @@ class App extends Component {
   getVisibleContacts = () => {
     const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
-
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter),
     );
@@ -54,7 +61,7 @@ class App extends Component {
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm contacts={contacts} onSubmit={this.formSubmitHandler} />
+        <ContactForm contacts={contacts}  onSubmit={this.formSubmitHandler} />
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
