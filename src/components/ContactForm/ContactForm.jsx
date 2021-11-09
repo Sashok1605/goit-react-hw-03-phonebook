@@ -19,29 +19,28 @@ class ContactForm extends Component {
     this.setState({ id: v4(), [name]: value });
   };
 
-  findByName = (name) => {
-    return this.props.contacts.some((item) => item.name.toLowerCase().includes(name.toLowerCase()));
+  findByName = contactName => {
+    return this.props.contacts.some(({ name }) => name === contactName);
+  };
+
+  findByNumber = contactNumber => {
+    return this.props.contacts.some(({ number }) => number === contactNumber);
   };
 
   handleSubmit = e => {
-    e.preventDefault();
-
-    const { name } = this.state;
-
-    if (this.findByName(name) && !this.state.number) {
+    const { name, number } = this.state;
+    if (this.findByName(name) && this.findByNumber(number)) {
       alert(`${name} is already in contacts!`);
       return;
     }
 
+    e.preventDefault();
     this.props.onSubmit(this.state);
     this.reset();
   };
-
-
   reset = () => {
     this.setState({ name: '', number: '' });
   };
-
   render() {
     return (
       <form onSubmit={this.handleSubmit} className={s.form}>

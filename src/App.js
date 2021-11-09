@@ -4,22 +4,20 @@ import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 import './App.css';
 
-
-
 class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
   componentDidMount() {
-    const contact = JSON.parse(localStorage.getItem("contact"));
+    const contact = JSON.parse(localStorage.getItem('contact'));
     if (contact) {
       this.setState({ contacts: contact });
     }
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem("contact", JSON.stringify(this.state.contacts));
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
     }
   }
   deleteContact = contactId => {
@@ -29,7 +27,6 @@ class App extends Component {
   };
 
   formSubmitHandler = ({ id, name, number }) => {
-    
     this.setState(prevState => ({
       contacts: [...prevState.contacts, { id, name, number }],
     }));
@@ -42,9 +39,9 @@ class App extends Component {
   getVisibleContacts = () => {
     const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
-  
-    return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter)
-    
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
     );
   };
 
@@ -55,7 +52,7 @@ class App extends Component {
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm contacts={contacts}  onSubmit={this.formSubmitHandler} />
+        <ContactForm contacts={contacts} onSubmit={this.formSubmitHandler} />
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
